@@ -1,0 +1,16 @@
+LM1Anteriormost point of the sagittal cephalic length without spine
+LM2Anteriormost point of the sagittal glabellar length
+LM3Intersection between the sagittal axis and the occipital furrow
+LM4Posteriormost point of the sagittal cephalic length
+LM5Maximum transversal glabellar width
+LM6Intersection between the occipital and axial furrows
+LM7Intersection between the posterior margin and the axial furrow
+LM8Anteriormost end of the eye
+LM9Posteriormost end of the eye
+LM10Anterior facial suture at the sagittal line
+LM11Intersection between the posterior branch of facial suture and the posterior or lateral border furrow
+LM12Intersection between the posterior branch of facial suture and the posterior or lateral margin
+LM13Anteriormost point of the sagittal (or ex-sagittal) cephalic length (if spiny, LM13 at the tip of the spine)
+LM14Lateralmost external point of the eye
+LM15Cephalic width at the level of the posterior margin of the occipital ring (LM4). If that point cannot be located, it is defined as the extreme of the genal angle
+Lm16Tip of the genal angle or spine
