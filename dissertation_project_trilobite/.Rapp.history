@@ -1,0 +1,1304 @@
+install.packages("palec", repos = c(getOption("repos"), "https://ms609.github.io/packages"))
+source("https://raw.githubusercontent.com/balsedie/trilomorph/main/TriloMorph-funs.R")
+#access TriloMorph metadata#
+trilomorph_metadata <- yaml_read(file="https://raw.githubusercontent.com/balsedie/trilomorph/main/trilomorph.yaml")#
+#
+#keep only information on specimens that have cephalon information. #
+#In case you want to analyse pygidia, you just need to change cephalon for pygidium in the line below#
+trilomorph_metadata <- trilomorph_metadata[which(trilomorph_metadata$morphology.cephalon),]
+#access TriloMorph metadata#
+trilomorph_metadata <- yaml_read(file="https://raw.githubusercontent.com/balsedie/trilomorph/main/trilomorph.yaml")
+#keep only information on specimens that have cephalon information. #
+#In case you want to analyse pygidia, you just need to change cephalon for pygidium in the line below#
+trilomorph_metadata <- trilomorph_metadata[which(trilomorph_metadata$morphology.cephalon),]
+#define the vector of specimens' IDs to read the shape files#
+fids <- trilomorph_metadata$ID#
+#
+#set the path to the unzipped folder with the shape files#
+dirlm <- "~path/to_the/downloaded/folder" #
+#
+#define the desired landmark configuration. It is a list stating dimensions, curves, number of semilandmarks, #
+#and maximum curves in in the dataset: in this case 2 dimensions, landmarks 1 to 16, 4 curves (out of 4 possible), #
+#12, 20, 20 and 20 semilandmarks for each curve respectively, and the curves in the trilomorph template.#
+nlms <-  list(dim = 2, #dimensions (2d)#
+         lm = c(1:16), #vector of desired fixed landmark configuration#
+         cv = c("glabella","suture","anterior","posterior"), #names or numbers of desired curves#
+         cvs.lm = c(12, 20, 20, 20), #number of subsampled semilandmarks in each curve#
+         curves.id = c("glabella","suture","anterior","posterior") #names of maximum number of curves in the dataset#
+         )#
+#
+#note to change this configuration if analysing pygidia. Trilomorph template[^6] defines up to 3 pygidial curves.#
+#nlms <- list(dim = 2, #dimensions (2d)#
+         lm = c(1:7), #vector of desired configuration#
+         cv = c("axis","border","margin"), #names or numbers of desired curves#
+         cvs.lm = c(x,x,x), #number of subsampled semilandmarks in each curve#
+         curves.id = c("axis","border","margin") #names of maximum number of curves in the dataset#
+         )#
+#
+#read the shape files. Note that sufix = "_C" is for cephala, change it to "_P" if analysing pygidia.#
+lmks <- shapRead(fids, sufix = "_C", subdir = dirlm)#
+#
+#remove specimens that don't fit the desired landmark configuration.#
+ldks <- shapFix(lmks, nlms)
+source("https://raw.githubusercontent.com/balsedie/trilomorph/main/TriloMorph-funs.R")
+#access TriloMorph metadata#
+trilomorph_metadata <- yaml_read(file="https://raw.githubusercontent.com/balsedie/trilomorph/main/trilomorph.yaml")#
+#
+#keep only information on specimens that have cephalon information. #
+#In case you want to analyse pygidia, you just need to change cephalon for pygidium in the line below#
+trilomorph_metadata <- trilomorph_metadata[which(trilomorph_metadata$morphology.cephalon),]
+#define the vector of specimens' IDs to read the shape files#
+fids <- trilomorph_metadata$ID#
+#
+#set the path to the unzipped folder with the shape files#
+dirlm <- "~path/to_the/downloaded/folder" #
+#
+#define the desired landmark configuration. It is a list stating dimensions, curves, number of semilandmarks, #
+#and maximum curves in in the dataset: in this case 2 dimensions, landmarks 1 to 16, 4 curves (out of 4 possible), #
+#12, 20, 20 and 20 semilandmarks for each curve respectively, and the curves in the trilomorph template.#
+nlms <-  list(dim = 2, #dimensions (2d)#
+         lm = c(1:16), #vector of desired fixed landmark configuration#
+         cv = c("glabella","suture","anterior","posterior"), #names or numbers of desired curves#
+         cvs.lm = c(12, 20, 20, 20), #number of subsampled semilandmarks in each curve#
+         curves.id = c("glabella","suture","anterior","posterior") #names of maximum number of curves in the dataset#
+         )#
+#
+#note to change this configuration if analysing pygidia. Trilomorph template[^6] defines up to 3 pygidial curves.#
+#nlms <- list(dim = 2, #dimensions (2d)#
+         lm = c(1:7), #vector of desired configuration#
+         cv = c("axis","border","margin"), #names or numbers of desired curves#
+         cvs.lm = c(x,x,x), #number of subsampled semilandmarks in each curve#
+         curves.id = c("axis","border","margin") #names of maximum number of curves in the dataset#
+         )#
+#
+#read the shape files. Note that sufix = "_C" is for cephala, change it to "_P" if analysing pygidia.#
+lmks <- shapRead(fids, sufix = "_C", subdir = dirlm)#
+#
+#remove specimens that don't fit the desired landmark configuration.#
+ldks <- shapFix(lmks, nlms)
+#first load the geomorph package#
+library(geomorph)#
+#
+#Superimpose by GPA.#
+gpan <- geomorph::gpagen(ldks, Proj = TRUE, PrinAxes = FALSE)#
+#
+# Construct the morphospace of selected configurations.#
+# This morphological space is reconstructed by means of a principal components analysis (PCA).#
+pcan <- geomorph::gm.prcomp(gpan$coords)#
+#
+#you can now plot the morphospace very easily#
+geomorph:::plot.gm.prcomp(pcan, main = "PCA-based morphospace", pch = 21, bg = "lightgray", cex = 1.5)#
+mtext(paste0("n = ", nrow(pcan$x)), side = 3, adj = 1, font = 3)
+library(StereoMorph)
+setwd('/Users/Remi/Desktop/Edodiscida_Project')
+setwd('/Users/Desktop/Eodiscida_Project')
+source('~/Downloads/TriloMorph-funs.R', chdir = TRUE)
+shapFix
+source('~/Downloads/TriloMorph-funs.R', chdir = TRUE)
+stereo-file <- "/Users/remi/Desktop/Eodiscida_Project/Shapes/Shizhudiscus_longquanensis.txt"
+setwd('/Users/remi/Desktop/Eodiscida_Project/Shapes/Shizhudiscus_longquanensis.txt')
+source('~/Downloads/TriloMorph-funs.R', chdir = TRUE)
+setwd('/Users/remi/Desktop/Eodiscida_Project_Shapes/Shizhudiscus_longquanensis.txt')
+file_path <- "/Users/remi/Desktop/Eodiscida_Project_Shapes/Shizhudiscus_longquanensis.txt"
+landmark_data <- shapRead(file_path)
+print(landmark_data)
+file_content <- readLines(file_path)
+file_path <- "/Users/remi/Desktop/Shizhudiscus_longquanensis_cleaned.txt"
+landmark_data <- shapRead(file_path)
+print(landmark_data)
+library(geomorph)
+data("scallopPLY")
+my.ply <- scallopPLY$ply
+fixed.lms1 <- digit.fixed(spec = my.ply, fixed=5)
+my.ply.2 <- scallopPLY$ply
+fixed.lms <- digit.fixed(my.ply.2, 5)
+n#
+#
+> surf.pts2 <- digitsurface(spec = my.ply.2, fixed = fixed.lms2)
+n
+n#
+>.
+n#
+>.#
+>n
+> data("scallopPLY")#
+> my.ply <- scallopPLY$ply#
+> fixed.lms1 <- digit.fixed(spec = my.ply, fixed=5)
+data("scallopPLY")#
+my.ply <- scallopPLY$ply#
+fixed.lms1 <- digit.fixed(spec = my.ply, fixed=5)
+my.ply.2 <- scallopPLY$ply#
+fixed.lms <- digit.fixed(my.ply.2, 5)
+source('~/Downloads/TriloMorph_Functions.r', chdir = TRUE)
+setwd('/Users/remi/Desktop/Redlichiia_Project/Shapes')
+getwd()
+setwd('/Users/remi/Desktop/Redlichiia_Project/Shapes')
+setwd('/Users/remi')
+setwd('/Desktop/Redlichiida_Project/Shapes')
+# ----------------------------------------#
+# Perform GPA Analysis#
+# ----------------------------------------#
+# Perform Generalized Procrustes Analysis#
+gpan <- geomorph::gpagen(processed_specimens, #
+                        Proj = TRUE,      # Project onto tangent space#
+                        PrinAxes = FALSE) # Don't align by principal axes#
+#
+# Calculate mean shape and Procrustes distances#
+mean_shape <- mshape(gpan$coords)#
+Pd <- c()#
+for(i in 1:dim(gpan$coords)[3]) {#
+    Pd[i] <- sqrt(sum((gpan$coords[,,i] - mean_shape)^2))#
+}#
+#
+# Calculate statistics for Procrustes distances#
+mean_pd <- mean(Pd)#
+sd_pd <- sd(Pd)#
+upper_threshold <- mean_pd + 2*sd_pd#
+#
+# ----------------------------------------#
+# Create Visualization (Two Plots Side by Side)#
+# ----------------------------------------#
+# Create new plotting window#
+dev.new(width = 12, height = 6)#
+par(mfrow = c(1,2))#
+#
+# ----------------------------------------#
+# Plot 1: Superimposition Plot#
+# ----------------------------------------#
+# Set up empty plot#
+plot(NA, NA, #
+     xlim = range(gpan$coords[,1,]), #
+     ylim = range(gpan$coords[,2,]),#
+     xlab = "X coordinate (Procrustes aligned)",#
+     ylab = "Y coordinate (Procrustes aligned)",#
+     main = "Procrustes Superimposition of Trilobite Cephalon")#
+#
+# Plot individual specimens#
+for(i in 1:dim(gpan$coords)[3]) {#
+    points(gpan$coords[,,i], #
+           pch = 20,       #
+           col = "gray50", #
+           cex = 0.3)      #
+}#
+#
+# Plot consensus shape#
+points(mean_shape, #
+       pch = 16,        #
+       cex = 1.2,       #
+       col = "black")   #
+#
+# Add sample size#
+mtext(paste0("n = ", dim(gpan$coords)[3]), #
+      side = 3, #
+      adj = 1, #
+      font = 3)#
+#
+# Add legend at bottom left#
+legend("bottomleft", #
+       legend = c("Consensus shape", "Individual specimens"),#
+       col = c("black", "gray50"), #
+       pch = c(16, 20),#
+       pt.cex = c(1.2, 0.3),#
+       cex = 0.8,#
+       bty = "n",#
+       inset = 0.02)#
+#
+# ----------------------------------------#
+# Plot 2: Procrustes Distances Histogram#
+# ----------------------------------------#
+ Create histogram#
+hist(Pd, #
+     main = "Procrustes Distances from Consensus",#
+     xlab = "Procrustes Distance",#
+     ylab = "Frequency",#
+     ylim = c(0, 20),#
+     breaks = sqrt(dim(gpan$coords)[3]),#
+     col = "lightblue",#
+     border = "white")#
+#
+# Add vertical lines to maximum height#
+segments(x0 = mean_pd, y0 = 0, x1 = mean_pd, y1 = 20, col = "red", lwd = 2)#
+segments(x0 = upper_threshold, y0 = 0, x1 = upper_threshold, y1 = 20, #
+         col = "red", lty = 2, lwd = 2)#
+#
+# Add text annotations - all at y=20#
+# Mean label on the left side of its line#
+text(mean_pd, 20, paste("Mean =", round(mean_pd, 3)), #
+     pos = 2,  # Left side#
+     col = "red", #
+     cex = 0.8)#
+#
+# Outlier threshold label on the right side of its line#
+text(upper_threshold, 20, paste("Outlier threshold =", round(upper_threshold, 3)), #
+     pos = 4,  # Right side#
+     col = "red", #
+     cex = 0.8)#
+#
+# SD between mean and threshold lines#
+text((mean_pd + upper_threshold)/2, 20,  # Position between the two lines#
+     paste("SD =", round(sd_pd, 3)),#
+     col = "black", #
+     cex = 0.8)#
+#
+# Return to default plotting parameters#
+par(mfrow = c(1,1))#
+#
+# ----------------------------------------#
+# Print Analysis Results#
+# ----------------------------------------#
+cat("\nGPA Analysis Summary:\n")#
+cat("----------------------------------------\n")#
+cat("Number of specimens:", dim(gpan$coords)[3], "\n")#
+cat("Procrustes Sum of Squares:", gpan$procD, "\n")#
+cat("Tangent Sum of Squares:", gpan$tangentD, "\n")#
+#
+cat("\nProcrustes Distances from Consensus:\n")#
+cat("Mean:", round(mean_pd, 4), "\n")#
+cat("SD:", round(sd_pd, 4), "\n")#
+cat("Range:", round(range(Pd), 4), "\n")#
+#
+# Identify potential outliers#
+potential_outliers <- which(Pd > upper_threshold)#
+if(length(potential_outliers) > 0) {#
+    cat("\nPotential outliers (>2SD from mean):\n")#
+    cat("Specimen IDs:\n")#
+    print(dimnames(gpan$coords)[[3]][potential_outliers])#
+    cat("\nTheir Procrustes distances:\n")#
+    print(round(Pd[potential_outliers], 4))#
+}#
+#
+# Save results#
+save(gpan, Pd, mean_shape, file = "gpa_analysis_results.RData")
+# -------------------------------------------------------------------------------------------------#
+# Performing GPA Analysis#
+# -------------------------------------------------------------------------------------------------#
+#
+# ----------------------------------------#
+# Load saved processed landmarks (if needed)#
+# ----------------------------------------#
+if(!exists("processed_specimens")) {#
+    load("processed_landmarks.RData")#
+}
+source('~/Downloads/英文版Workflow.r', chdir = TRUE)
+# Procrustes Sum of Squares#
+procD <- sum((gpan$coords - array(gpan$consensus, dim=dim(gpan$coords)))^2)
+# Tangent Sum of Squares (考虑投影效应)#
+# 使用geomorph包的内部函数进行计算#
+tangentD <- procD * cos(sqrt(procD)/2)^2
+# Print analysis results#
+cat("\nGPA Analysis Summary:\n")#
+cat("----------------------------------------\n")#
+cat("Number of specimens:", dim(gpan$coords)[3], "\n")#
+cat("Procrustes Sum of Squares:", round(procD, 4), "\n")#
+cat("Tangent Sum of Squares:", round(tangentD, 4), "\n")#
+#
+cat("\nProcrustes Distances from Consensus:\n")#
+cat("Mean:", round(mean_pd, 4), "\n")#
+cat("SD:", round(sd_pd, 4), "\n")#
+cat("Range:", round(range(Pd), 4), "\n")
+# 正确计算 Procrustes Sum of Squares#
+procD <- sum(Pd^2)  # 使用已经计算好的Procrustes距离的平方和#
+#
+# 计算 Tangent Sum of Squares#
+tangentD <- procD * cos(sqrt(procD)/2)^2#
+#
+cat("Procrustes Sum of Squares:", round(procD, 4), "\n")#
+cat("Tangent Sum of Squares:", round(tangentD, 4), "\n")
+# -------------------------------------------------------------------------------------------------#
+# PCA Morphospace with Proper Deformation Grids#
+# -------------------------------------------------------------------------------------------------#
+#
+# Load required packages#
+library(geomorph)#
+library(Morpho)  # For proper deformation grid generation
+# ----------------------------------------#
+# Setup for visualization#
+# ----------------------------------------#
+# Define specific positions along PC1 where we want grids#
+grid_positions <- c(-0.4, -0.2, 0, 0.2, 0.4)#
+n_grids <- length(grid_positions)#
+#
+# Generate predicted shapes for each position#
+ref_shape <- mshape(gpan$coords)#
+pred_shapes <- list()#
+#
+# Generate shapes for each position#
+for(i in 1:n_grids) {#
+    pred_shapes[[i]] <- ref_shape + pcan$rotation[,1] * grid_positions[i] * pcan$sdev[1]#
+}
+# ----------------------------------------#
+# Create visualization#
+# ----------------------------------------#
+# Set up the plotting device#
+dev.new(width = 12, height = 10)#
+#
+# Create layout matrix#
+# Top part for PCA plot, bottom part for deformation grids#
+layout_matrix <- matrix(c(rep(1,3), rep(2:6, each=2)), ncol=5, byrow=TRUE)#
+layout(layout_matrix, heights = c(3,2))
+# ----------------------------------------#
+# Plot 1: PCA Morphospace (top)#
+# ----------------------------------------#
+par(mar = c(4,4,1,1))#
+#
+# Draw main PCA plot#
+plot(pcan$x[,1], pcan$x[,2],#
+     xlim = c(-0.4, 0.4),  # Set correct x-axis range#
+     ylim = range(pcan$x[,2]),#
+     xlab = paste0("PC1 (", round(prop_var[1]*100, 1), "%)"),#
+     ylab = paste0("PC2 (", round(prop_var[2]*100, 1), "%)"),#
+     type = "n",#
+     asp = 1)
+install.packages("geomorph")
+source('~/Downloads/validation_analyses.r', chdir = TRUE)
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# Validation Analyses Of Substitution Loci (Landmark 11 + Landmark 12)#
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+load("gpa_analysis_results.RData")  # All specimens#
+load("gpa_analysis_results_no_olenellina.RData")  # Non-Olenellina specimens#
+#
+# -----------------------------------------------------#
+# Step 1: Analysis Function Definition#
+# -----------------------------------------------------#
+analyze_all_landmarks <- function(gpa_data, group_name = "") {#
+    # Extract all fixed landmarks (1-16)#
+    n_landmarks <- 16#
+    landmark_coords <- gpa_data$coords[1:n_landmarks,,]#
+    n_specimens <- dim(landmark_coords)[3]#
+    # Calculate mean position (consensus) for each landmark#
+    landmark_consensus <- apply(landmark_coords, c(1,2), mean)#
+    # Initialise array for storing individual landmark distances#
+    landmark_proc_dist <- array(0, dim = c(n_specimens, n_landmarks))#
+    # Calculate procrustes distances for each landmark#
+    for(i in 1:n_specimens) {#
+        for(j in 1:n_landmarks) {#
+            landmark_proc_dist[i,j] <- sqrt(sum((landmark_coords[j,,i] - landmark_consensus[j,])^2))#
+        }#
+    }#
+#
+    # Calculate summary statistics for each landmark#
+    landmark_stats <- list()#
+    for(i in 1:n_landmarks) {#
+        distances <- landmark_proc_dist[,i]#
+        landmark_stats[[i]] <- list(#
+            landmark = paste0("LM", i),#
+            mean = mean(distances),#
+            sd = sd(distances),#
+            cv = sd(distances)/mean(distances) * 100,#
+            min = min(distances),#
+            max = max(distances)#
+        )#
+    }#
+    results <- list(#
+        group = group_name,#
+        n_specimens = n_specimens,#
+        landmark_stats = landmark_stats#
+    )#
+    return(results)#
+}#
+#
+# -----------------------------------------------------#
+# Step 2: Generate Report Function#
+# -----------------------------------------------------#
+generate_landmark_report <- function(results_all, results_no_olenellina) {#
+    cat("\n=== Complete Landmark Position Analysis Report ===\n")#
+    cat("\n1. Sample Sizes:\n")#
+    cat("All Specimens:", results_all$n_specimens, "\n")#
+    cat("Non-Olenellina:", results_no_olenellina$n_specimens, "\n")#
+    # Create comprehensive comparison dataframe#
+    comparison_df <- data.frame(#
+        Landmark = character(),#
+        Mean_All = numeric(),#
+        Mean_NonOlen = numeric(),#
+        SD_All = numeric(),#
+        SD_NonOlen = numeric(),#
+        CV_All = numeric(),#
+        CV_NonOlen = numeric(),#
+        CV_Difference = numeric(),#
+        stringsAsFactors = FALSE#
+    )#
+    for(i in 1:16) {#
+        stats_all <- results_all$landmark_stats[[i]]#
+        stats_no_olen <- results_no_olenellina$landmark_stats[[i]]#
+        comparison_df[i,] <- c(#
+            paste0("LM", i),#
+            stats_all$mean,#
+            stats_no_olen$mean,#
+            stats_all$sd,#
+            stats_no_olen$sd,#
+            stats_all$cv,#
+            stats_no_olen$cv,#
+            stats_all$cv - stats_no_olen$cv#
+        )#
+    }#
+    # Convert numeric columns#
+    numeric_cols <- 2:ncol(comparison_df)#
+    comparison_df[,numeric_cols] <- apply(comparison_df[,numeric_cols], 2, as.numeric)#
+    cat("\n2. Individual Landmark Analysis:\n")#
+    print(format(comparison_df, digits = 4))#
+    # Calculate statistics for non-substituted landmarks#
+    non_subst_indices <- c(1:10, 13:16)#
+    cv_non_subst_all <- comparison_df$CV_All[non_subst_indices]#
+    cv_non_subst_no_olen <- comparison_df$CV_NonOlen[non_subst_indices]#
+    cat("\n3. Analysis Summary:\n")#
+#
+    # Performance of substituted landmarks#
+    cat("\na) Performance of Substituted Landmarks:\n")#
+    cat("LM11 CV: All =", round(comparison_df$CV_All[11], 2), #
+        "%, Non-Olenellina =", round(comparison_df$CV_NonOlen[11], 2), "%\n")#
+    cat("LM12 CV: All =", round(comparison_df$CV_All[12], 2), #
+        "%, Non-Olenellina =", round(comparison_df$CV_NonOlen[12], 2), "%\n")#
+    # Overall landmark variation#
+    cat("\nb) Overall Landmark Variation:\n")#
+    cat("Non-substituted landmarks CV range:\n")#
+    cat("All Specimens:", round(min(cv_non_subst_all), 2), "% to", #
+        round(max(cv_non_subst_all), 2), "%\n")#
+    cat("Non-Olenellina:", round(min(cv_non_subst_no_olen), 2), "% to", #
+        round(max(cv_non_subst_no_olen), 2), "%\n")#
+    # Mean CV for context#
+    cat("\nc) Mean CV for context:\n")#
+    cat("Mean CV (non-substituted landmarks) - All Specimens:", #
+        round(mean(cv_non_subst_all), 2), "%\n")#
+    cat("Mean CV (non-substituted landmarks) - Non-Olenellina:", #
+        round(mean(cv_non_subst_no_olen), 2), "%\n")#
+    # Save results#
+    write.csv(comparison_df, "landmark_complete_analysis.xlsx", row.names = FALSE)#
+}
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# STEP 0: Set Up R Environemnt #
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#
+# Clean environment and set up workspace#
+rm(list=ls(all=TRUE))#
+graphics.off()
+# ----------------------------------------#
+# Process file names#
+# ----------------------------------------#
+# Get file list#
+files <- list.files("xml_output_dataset", pattern = "\\.txt$", full.names = TRUE)#
+cat("Found", length(files), "text files\n")#
+#
+# Process file names (Remove extra .txt extensions)#
+file_names <- basename(files)#
+clean_names <- gsub("\\.txt\\.txt$", ".txt", file_names)#
+clean_names <- gsub("\\.txt$", "", clean_names)
+>citation("StereoMorph")
+citation("StereoMorph")
+# ---------------------------------------------#
+# 2. Data Preparation#
+# ---------------------------------------------#
+# Load specimen-order mapping information#
+load("specimen_order_mapping.RData")  # loads specimen_orders object#
+#
+# Load complete dataset (81 specimens)#
+load("gpa_analysis_results.RData")  # loads as gpa_results#
+gpan_full <- gpa_results#
+#
+# Load dataset without olenellina (69 specimens)#
+load("gpa_analysis_results_no_olenellina.RData")  # loads as gpa_no_olenellina#
+gpan_nonolen <- gpa_no_olenellina#
+#
+# Define olenellina specimens#
+olenellina_species <- c(#
+    "Choubertella_spinosa",#
+    "Daguinaspis_ambroggii",#
+    "Elliptocephala_asaphoides",#
+    "Fallotaspis_bondoni",#
+    "Holmia_kjerulfi",#
+    "Judomia_tera",#
+    "Montezumaspis_parallela",#
+    "Nephrolenellus_geniculatus",#
+    "Nevadia_weeksi",#
+    "Olenellus_gilberti",#
+    "Peachella_iddingsi",#
+    "Wanneria_walcottana"#
+)#
+#
+# ---------------------------------------------#
+# 3. PCA Analysis#
+# ---------------------------------------------#
+# Perform PCA on complete dataset#
+pca_full <- gm.prcomp(gpan_full$coords)#
+#
+# Extract indices for non-olenellina specimens#
+non_olen_indices <- !sapply(dimnames(gpan_full$coords)[[3]], function(x) {#
+    any(sapply(olenellina_species, function(y) grepl(y, x, ignore.case = TRUE)))#
+})#
+#
+# Extract PCA scores for non-olenellina specimens from complete dataset#
+pca_scores_full_nonolen <- pca_full$x[non_olen_indices, ]#
+#
+# Perform PCA on dataset without olenellina#
+pca_nonolen <- gm.prcomp(gpan_nonolen$coords)#
+#
+# ---------------------------------------------#
+# 4. Visualisation#
+# ---------------------------------------------#
+# Calculate explained variance#
+var_full <- (pca_full$sdev^2)/sum(pca_full$sdev^2) * 100#
+var_nonolen <- (pca_nonolen$sdev^2)/sum(pca_nonolen$sdev^2) * 100#
+#
+# Create a vector for olenellina indices in the full dataset#
+olenellina_indices <- sapply(dimnames(gpan_full$coords)[[3]], function(x) {#
+    any(sapply(olenellina_species, function(y) grepl(y, x, ignore.case = TRUE)))#
+})#
+#
+# Set up plotting window with appropriate margins#
+dev.new(width = 8, height = 6)#
+par(mar = c(5, 5, 4, 2))  # Bottom, left, top, right margins#
+#
+# Create main plot area for complete dataset#
+plot(NA, NA,#
+     xlim = range(pca_full$x[,1]),#
+     ylim = range(pca_full$x[,2]),#
+     xlab = paste0("PC1 (", round(var_full[1], 1), "%)"),#
+     ylab = paste0("PC2 (", round(var_full[2], 1), "%)"),#
+     main = "PCA Comparison",#
+     asp = 1)#
+#
+# Add zero lines#
+abline(h = 0, v = 0, lty = 2, col = "gray")#
+#
+# Add non-Olenellina points from complete dataset (black solid circles)#
+points(pca_full$x[!olenellina_indices,1], #
+       pca_full$x[!olenellina_indices,2],#
+       pch = 19,  # Solid circle#
+       col = "black",#
+       cex = 1.2)#
+#
+# Add Olenellina points from complete dataset (red solid circles)#
+points(pca_full$x[olenellina_indices,1], #
+       pca_full$x[olenellina_indices,2],#
+       pch = 4,  # Solid circle#
+       col = "red",#
+       cex = 1.2)#
+#
+# Add non-Olenellina subset points (gray open circles)#
+points(pca_nonolen$x[,1], #
+       pca_nonolen$x[,2],#
+       pch = 1,   # Open circle#
+       col = "gray50",#
+       cex = 1.2)#
+#
+# Add legend on the right side#
+legend("topright", #
+       legend = c("Complete dataset (Non-Olenellina)", #
+                 "Complete dataset (Olenellina)",#
+                 "Non-Olenellina subset"),#
+       col = c("black", "red", "gray50"),#
+       pch = c(19, 4, 1),#
+       cex = 0.7,#
+       bty = "n")#
+#
+# Add sample size information at the top#
+mtext("Complete dataset: n = 81", #
+      side = 3, line = 0, adj = 0, font = 3)#
+mtext("Non-Olenellina subset: n = 69", #
+      side = 3, line = 1, adj = 0, font = 3, col = "gray50")#
+#
+# Add Non-Olenellina PC variance information (gray text)#
+mtext(paste0("PC1 (", round(var_nonolen[1], 1), "%)"), #
+      side = 1, line = 3, col = "gray50", adj = 0.75)  # Near right end of x-axis#
+#
+mtext(paste0("PC2 (", round(var_nonolen[2], 1), "%)"), #
+      side = 2, line = 3, col = "gray50", adj = 0.9)  # Near top of y-axis#
+#
+# Save the plot#
+dev.copy2pdf(file = "combined_pca_comparison.pdf")
+# ---------------------------------------------#
+# 2. Data Preparation#
+# ---------------------------------------------#
+# Load specimen-order mapping information#
+load("specimen_order_mapping.RData")  # loads specimen_orders object#
+#
+# Load complete dataset (81 specimens)#
+load("gpa_analysis_results.RData")  # loads as gpa_results#
+gpan_full <- gpa_results#
+#
+# Load dataset without olenellina (69 specimens)#
+load("gpa_analysis_results_no_olenellina.RData")  # loads as gpa_no_olenellina#
+gpan_nonolen <- gpa_no_olenellina#
+#
+# Define olenellina specimens#
+olenellina_species <- c(#
+    "Choubertella_spinosa",#
+    "Daguinaspis_ambroggii",#
+    "Elliptocephala_asaphoides",#
+    "Fallotaspis_bondoni",#
+    "Holmia_kjerulfi",#
+    "Judomia_tera",#
+    "Montezumaspis_parallela",#
+    "Nephrolenellus_geniculatus",#
+    "Nevadia_weeksi",#
+    "Olenellus_gilberti",#
+    "Peachella_iddingsi",#
+    "Wanneria_walcottana"#
+)
+# -------------------------------------------------------------------------------------------------#
+# Pearson Correlation Analysis and Visualization of Trilobite Disparity and Evolutionary Rate#
+# -------------------------------------------------------------------------------------------------#
+#
+# Set working directory#
+setwd("~/Desktop/dissertation_project_trilobite")#
+#
+# Load required packages#
+if(!require(ggplot2)) install.packages("ggplot2")#
+if(!require(dplyr)) install.packages("dplyr")#
+if(!require(patchwork)) install.packages("patchwork")#
+#
+library(ggplot2)#
+library(dplyr)#
+library(patchwork)#
+#
+# -------------------------------------------------------------------------------------------------#
+# Load data#
+# -------------------------------------------------------------------------------------------------#
+load("combined_rate_disparity_data.RData")#
+#
+cat("Data files loaded\n")#
+#
+# -------------------------------------------------------------------------------------------------#
+# Define color schemes#
+# -------------------------------------------------------------------------------------------------#
+# Time periods#
+time_colors <- c(#
+  "Stage_3" = "#1B9E77",      # Dark teal#
+  "Stage_4" = "#D95F02",      # Orange#
+  "Wuliuan" = "#7570B3",      # Purple#
+  "Drumian" = "#E7298A",      # Pink#
+  "Guzhangian" = "#66A61E",   # Green#
+  "Furongian" = "#666666"     # Grey#
+)#
+#
+# Orders#
+order_colors <- c(#
+  "EODISCIDA" = "#E41A1C",      # Red#
+  "REDLICHIIDA" = "#4DAF4A",    # Green#
+  "CORYNEXOCHIDA" = "#377EB8",  # Blue#
+  "AULACOPLEURIDA" = "#FF7F00", # Orange#
+  "OLENIDA" = "#984EA3",        # Purple#
+  "UNCERTAIN" = "#999999"       # Gray#
+)#
+#
+# Palaeocontinents#
+continent_colors <- c(#
+  "BALTICA" = "#4575B4",    # Deep blue#
+  "CHINA" = "#D73027",      # Deep red#
+  "GONDWANA" = "#91CF60",   # Green#
+  "LAURENTIA" = "#FEE090"   # Golden yellow#
+)#
+#
+# -------------------------------------------------------------------------------------------------#
+# Correlation analysis: Examining the relationship between disparity and evolutionary rate#
+# -------------------------------------------------------------------------------------------------#
+#
+# Create summary data frames for correlation analysis#
+# Time period summary#
+time_summary_corr <- data.frame(#
+  time_period = time_summary$time_period,#
+  disparity = time_sov_means$sov,#
+  rate = time_summary$mean_rate#
+)#
+#
+# Order summary#
+order_summary_corr <- data.frame(#
+  order = order_summary$order,#
+  disparity = order_sov_means$sov,#
+  rate = order_summary$mean_rate#
+)#
+#
+# Palaeocontinent summary#
+continent_summary_corr <- data.frame(#
+  palaeocontinent = palaeocontinent_summary$palaeocontinent,#
+  disparity = palaeocontinent_sov_means$sov,#
+  rate = palaeocontinent_summary$mean_rate#
+)#
+#
+# Calculate correlations#
+cat("\n2.1 Correlation between time period disparity and evolutionary rate:\n")#
+time_pearson <- cor.test(time_summary_corr$disparity, time_summary_corr$rate, method = "pearson")#
+print(time_pearson)#
+#
+cat("\n2.2 Correlation between order disparity and evolutionary rate:\n")#
+order_pearson <- cor.test(order_summary_corr$disparity, order_summary_corr$rate, method = "pearson")#
+print(order_pearson)#
+#
+cat("\n2.3 Correlation between palaeocontinent disparity and evolutionary rate:\n")#
+continent_pearson <- cor.test(continent_summary_corr$disparity, continent_summary_corr$rate, method = "pearson")#
+print(continent_pearson)
+# -------------------------------------------------------------------------------------------------#
+# 测试EODISCIDA SoV异常#
+# 完整分析代码，包含从设置路径到可视化的所有步骤#
+# -------------------------------------------------------------------------------------------------#
+#
+# 设置工作目录 - 请根据您的实际路径修改#
+setwd("~/Desktop/dissertation_project_trilobite")#
+#
+# 加载必要的包#
+if(!require(ggplot2)) install.packages("ggplot2")#
+if(!require(dplyr)) install.packages("dplyr")#
+if(!require(tidyr)) install.packages("tidyr")#
+if(!require(reshape2)) install.packages("reshape2")#
+if(!require(gridExtra)) install.packages("gridExtra")#
+#
+library(ggplot2)#
+library(dplyr)#
+library(tidyr)#
+library(reshape2)#
+library(gridExtra)#
+#
+# 加载数据#
+cat("正在加载数据...\n")#
+load("combined_rate_disparity_data.RData")#
+load("pca_analysis_results.RData")#
+#
+# 确认数据已正确加载#
+cat("数据加载完成，检查可用对象:\n")#
+print(ls())#
+#
+# -------------------------------------------------------------------------------------------------#
+# 分析EODISCIDA的SoV异常#
+# -------------------------------------------------------------------------------------------------#
+#
+analyze_eodiscida_sov <- function() {#
+  cat("\n=========== EODISCIDA SoV异常分析 ===========\n")#
+  # 1. 提取EODISCIDA的数据#
+  eodiscida_data <- disparity_data[disparity_data$order == "EODISCIDA", ]#
+  # 2. 查看EODISCIDA的统计概况#
+  cat("EODISCIDA样本数量:", nrow(eodiscida_data), "\n")#
+  cat("EODISCIDA SoV统计量:\n")#
+  print(summary(eodiscida_data$sov))#
+  # 3. 与其他目的SoV比较#
+  other_orders <- unique(disparity_data$order[disparity_data$order != "EODISCIDA"])#
+  cat("\n其他目的SoV平均值:\n")#
+  order_means <- data.frame(#
+    order = character(),#
+    mean_sov = numeric(),#
+    median_sov = numeric(),#
+    min_sov = numeric(),#
+    max_sov = numeric(),#
+    count = numeric(),#
+    stringsAsFactors = FALSE#
+  )#
+  for(ord in c("EODISCIDA", other_orders)) {#
+    ord_data <- disparity_data$sov[disparity_data$order == ord]#
+    order_means <- rbind(order_means, data.frame(#
+      order = ord,#
+      mean_sov = mean(ord_data, na.rm = TRUE),#
+      median_sov = median(ord_data, na.rm = TRUE),#
+      min_sov = min(ord_data, na.rm = TRUE),#
+      max_sov = max(ord_data, na.rm = TRUE),#
+      count = sum(!is.na(ord_data)),#
+      stringsAsFactors = FALSE#
+    ))#
+    cat(ord, ": ", format(mean(ord_data, na.rm = TRUE), digits = 6), "\n")#
+  }#
+  # 4. 提取原始PCA分数#
+  # 获取所有样本的PCA分数#
+  pca_data <- as.data.frame(pca_results$scores)#
+  # 为PCA数据添加目标分类#
+  pca_data$specimen <- rownames(pca_data)#
+  pca_data$order <- NA#
+  pca_data$sov <- NA#
+  for(i in 1:nrow(pca_data)) {#
+    spec_name <- pca_data$specimen[i]#
+    matching_rows <- which(disparity_data$specimen == spec_name)#
+    if(length(matching_rows) > 0) {#
+      pca_data$order[i] <- as.character(disparity_data$order[matching_rows[1]])#
+      pca_data$sov[i] <- disparity_data$sov[matching_rows[1]]#
+    }#
+  }#
+  # 只保留有目分类的样本#
+  pca_data <- pca_data[!is.na(pca_data$order), ]#
+  # 5. 各个目的主成分方差分析#
+  # 获取所有主成分列#
+  pc_cols <- grep("^PC", names(pca_data), value = TRUE)#
+  # 创建一个数据框来存储各个目在每个主成分上的方差#
+  order_pc_variance <- data.frame(#
+    order = character(),#
+    pc = character(),#
+    variance = numeric(),#
+    stringsAsFactors = FALSE#
+  )#
+  # 计算EODISCIDA和其他目在所有主成分上的方差#
+  for(ord in unique(pca_data$order)) {#
+    ord_data <- pca_data[pca_data$order == ord, pc_cols]#
+    # 检查样本数量是否足够计算方差#
+    if(nrow(ord_data) > 1) {#
+      for(pc in pc_cols) {#
+        pc_var <- var(ord_data[[pc]], na.rm = TRUE)#
+        order_pc_variance <- rbind(order_pc_variance, data.frame(#
+          order = ord,#
+          pc = pc,#
+          variance = pc_var,#
+          stringsAsFactors = FALSE#
+        ))#
+      }#
+    }#
+  }#
+  # 提取EODISCIDA的主成分方差#
+  eodiscida_pc_vars <- order_pc_variance[order_pc_variance$order == "EODISCIDA", ]#
+  # 取前10个主成分#
+  eodiscida_pc_vars <- eodiscida_pc_vars[1:min(10, nrow(eodiscida_pc_vars)), ]#
+  cat("\nEODISCIDA各主成分的方差:\n")#
+  print(eodiscida_pc_vars)#
+  # 计算每个样本在所有主成分上的方差#
+  specimen_pc_vars <- data.frame(#
+    specimen = character(),#
+    order = character(),#
+    total_var = numeric(),#
+    stringsAsFactors = FALSE#
+  )#
+  for(i in 1:nrow(pca_data)) {#
+    pc_values <- as.numeric(pca_data[i, pc_cols])#
+    specimen_pc_vars <- rbind(specimen_pc_vars, data.frame(#
+      specimen = pca_data$specimen[i],#
+      order = pca_data$order[i],#
+      total_var = var(pc_values, na.rm = TRUE),#
+      stringsAsFactors = FALSE#
+    ))#
+  }#
+  # 6. 可能的原因分析#
+  cat("\n可能的原因分析:\n")#
+  cat("1. 检查EODISCIDA样本在各主成分上的分布:\n")#
+  top_pcs <- order(eodiscida_pc_vars$variance, decreasing = TRUE)[1:3]#
+  cat("  贡献最大方差的前三个主成分: ", #
+      paste(eodiscida_pc_vars$pc[top_pcs], collapse = ", "), "\n")#
+  cat("2. 检查是否有异常值:\n")#
+  # 计算每个EODISCIDA样本的Z-score#
+  eodiscida_specimens <- pca_data[pca_data$order == "EODISCIDA", ]#
+  for(pc in pc_cols[1:5]) {  # 仅检查前5个主成分#
+    if(nrow(eodiscida_specimens) > 0 && sd(eodiscida_specimens[[pc]], na.rm = TRUE) > 0) {#
+      z_scores <- scale(eodiscida_specimens[[pc]])#
+      outliers <- which(abs(z_scores) > 2)#
+      if(length(outliers) > 0) {#
+        cat("  在", pc, "上可能的异常值: ", #
+            paste(eodiscida_specimens$specimen[outliers], #
+                  "Z-score =", round(z_scores[outliers], 2), #
+                  collapse = ", "), "\n")#
+      }#
+    }#
+  }#
+  cat("3. SoV与各主成分方差的关系:\n")#
+  # 计算各目前5个主成分的总方差与SoV的相关性#
+  for(ord in unique(pca_data$order)) {#
+    ord_data <- pca_data[pca_data$order == ord, ]#
+    if(nrow(ord_data) > 2) {  # 需要至少3个样本计算相关性#
+      ord_pc_var_sum <- apply(ord_data[, pc_cols[1:min(5, length(pc_cols))]], 1, var, na.rm = TRUE)#
+      sov_pc_cor <- cor(ord_data$sov, ord_pc_var_sum, use = "pairwise.complete.obs")#
+      cat("  ", ord, "的SoV与前5个主成分总方差相关性:", round(sov_pc_cor, 3), "\n")#
+    }#
+  }#
+  # 7. 返回有用的数据集供绘图使用#
+  return(list(#
+    pca_data = pca_data,#
+    order_means = order_means,#
+    order_pc_variance = order_pc_variance,#
+    specimen_pc_vars = specimen_pc_vars,#
+    eodiscida_specimens = eodiscida_specimens#
+  ))#
+}#
+#
+# 运行分析#
+analysis_results <- analyze_eodiscida_sov()#
+#
+# -------------------------------------------------------------------------------------------------#
+# 可视化分析#
+# -------------------------------------------------------------------------------------------------#
+#
+create_visualizations <- function(analysis_results) {#
+  cat("\n=========== 创建可视化图表 ===========\n")#
+  # 1. 各目的SoV箱线图#
+  p1 <- ggplot(disparity_data, aes(x = reorder(order, sov, FUN = median), y = sov)) +#
+    geom_boxplot(aes(fill = order), alpha = 0.7) +#
+    geom_jitter(width = 0.2, height = 0, alpha = 0.5) +#
+    theme_minimal() +#
+    labs(#
+      title = "各目的SoV分布",#
+      x = "目 (Order)",#
+      y = "Sum of Variances (SoV)"#
+    ) +#
+    theme(#
+      axis.text.x = element_text(angle = 45, hjust = 1),#
+      legend.position = "none"#
+    )#
+  print(p1)#
+  # 2. EODISCIDA与其他目在主要主成分上的方差比较#
+  pc_vars_wide <- dcast(analysis_results$order_pc_variance, order ~ pc, value.var = "variance")#
+  pc_vars_long <- melt(pc_vars_wide, id.vars = "order", #
+                        variable.name = "Principal Component", #
+                        value.name = "Variance")#
+  p2 <- ggplot(pc_vars_long[pc_vars_long$`Principal Component` %in% paste0("PC", 1:5), ], #
+               aes(x = `Principal Component`, y = Variance, fill = order)) +#
+    geom_bar(stat = "identity", position = "dodge") +#
+    theme_minimal() +#
+    labs(#
+      title = "各目在前5个主成分上的方差",#
+      x = "Principal Component",#
+      y = "Variance"#
+    ) +#
+    theme(axis.text.x = element_text(angle = 0))#
+  print(p2)#
+  # 3. 各目样本在PC空间的散点图#
+  # 只使用前两个主成分#
+  pca_data <- analysis_results$pca_data#
+  p3 <- ggplot(pca_data, aes(x = PC1, y = PC2, color = order)) +#
+    geom_point(size = 3, alpha = 0.7) +#
+    stat_ellipse(aes(group = order), type = "t", linetype = 2) +#
+    theme_minimal() +#
+    labs(#
+      title = "各目在PC1和PC2上的分布",#
+      x = "PC1",#
+      y = "PC2"#
+    )#
+  print(p3)#
+  # 4. 找到方差贡献最大的主成分组合#
+  order_pc_var <- analysis_results$order_pc_variance#
+  eodiscida_pc_var <- order_pc_var[order_pc_var$order == "EODISCIDA", ]#
+  top_pcs <- order(eodiscida_pc_var$variance, decreasing = TRUE)[1:2]#
+  pc_x <- eodiscida_pc_var$pc[top_pcs[1]]#
+  pc_y <- eodiscida_pc_var$pc[top_pcs[2]]#
+  p4 <- ggplot(pca_data, aes_string(x = pc_x, y = pc_y, color = "order")) +#
+    geom_point(size = 3, alpha = 0.7) +#
+    stat_ellipse(aes(group = order), type = "t", linetype = 2) +#
+    theme_minimal() +#
+    labs(#
+      title = paste("各目在", pc_x, "和", pc_y, "上的分布（EODISCIDA方差最大的主成分）"),#
+      x = pc_x,#
+      y = pc_y#
+    )#
+  print(p4)#
+  # 5. SoV与各样本主成分总方差的散点图#
+  # 计算每个样本前5个主成分的总方差#
+  pc_cols <- grep("^PC", names(pca_data), value = TRUE)[1:5]#
+  pca_data$pc_total_var <- apply(pca_data[, pc_cols], 1, var, na.rm = TRUE)#
+  p5 <- ggplot(pca_data, aes(x = pc_total_var, y = sov, color = order)) +#
+    geom_point(size = 3) +#
+    geom_smooth(method = "lm", se = FALSE, color = "gray50") +#
+    theme_minimal() +#
+    labs(#
+      title = "样本主成分总方差与SoV的关系",#
+      x = "前5个主成分的总方差",#
+      y = "Sum of Variances (SoV)"#
+    )#
+  print(p5)#
+  # 保存所有图表#
+  plots <- list(p1, p2, p3, p4, p5)#
+  return(plots)#
+}#
+#
+# 运行可视化分析#
+plots <- create_visualizations(analysis_results)#
+#
+# 如果要保存图表为PDF#
+save_plots <- function(plots) {#
+  pdf("EODISCIDA_SoV_Analysis.pdf", width = 10, height = 8)#
+  for(p in plots) {#
+    print(p)#
+  }#
+  dev.off()#
+  cat("\n图表已保存到 'EODISCIDA_SoV_Analysis.pdf'\n")#
+}#
+#
+# 取消注释下行以保存图表#
+# save_plots(plots)#
+#
+cat("\n分析完成！\n")
+# -------------------------------------------------------------------------------------------------#
+# Load previously saved data#
+# -------------------------------------------------------------------------------------------------#
+# Load the rate tree data#
+load("phylogenetic_tree_rates_palaeocontinents_orders.RData")#
+#
+# Load time mapping#
+load("specimen_time_mapping.RData")#
+#
+# Load order mapping#
+load("specimen_order_mapping.RData")#
+#
+# Load palaeocontinent mapping#
+load("specimen_palaeocontinent_mapping.RData")#
+#
+# Load PCA results#
+load("pca_analysis_results.RData")
+load("disparity_rate_statistical_results.RData")
+# -------------------------------------------------------------------------------------------------#
+# 测试EODISCIDA SoV异常#
+# 完整分析代码，包含从设置路径到可视化的所有步骤#
+# -------------------------------------------------------------------------------------------------#
+#
+# 设置工作目录 - 请根据您的实际路径修改#
+setwd("~/Desktop/dissertation_project_trilobite")#
+#
+# 加载必要的包#
+if(!require(ggplot2)) install.packages("ggplot2")#
+if(!require(dplyr)) install.packages("dplyr")#
+if(!require(tidyr)) install.packages("tidyr")#
+if(!require(reshape2)) install.packages("reshape2")#
+if(!require(gridExtra)) install.packages("gridExtra")#
+#
+library(ggplot2)#
+library(dplyr)#
+library(tidyr)#
+library(reshape2)#
+library(gridExtra)#
+#
+# 加载数据#
+cat("正在加载数据...\n")#
+load("combined_rate_disparity_data.RData")#
+load("pca_analysis_results.RData")#
+#
+# 确认数据已正确加载#
+cat("数据加载完成，检查可用对象:\n")#
+print(ls())#
+#
+# -------------------------------------------------------------------------------------------------#
+# 分析EODISCIDA的SoV异常#
+# -------------------------------------------------------------------------------------------------#
+#
+analyze_eodiscida_sov <- function() {#
+  cat("\n=========== EODISCIDA SoV异常分析 ===========\n")#
+  # 1. 提取EODISCIDA的数据#
+  eodiscida_data <- disparity_data[disparity_data$order == "EODISCIDA", ]#
+  # 2. 查看EODISCIDA的统计概况#
+  cat("EODISCIDA样本数量:", nrow(eodiscida_data), "\n")#
+  cat("EODISCIDA SoV统计量:\n")#
+  print(summary(eodiscida_data$sov))#
+  # 3. 与其他目的SoV比较#
+  other_orders <- unique(disparity_data$order[disparity_data$order != "EODISCIDA"])#
+  cat("\n其他目的SoV平均值:\n")#
+  order_means <- data.frame(#
+    order = character(),#
+    mean_sov = numeric(),#
+    median_sov = numeric(),#
+    min_sov = numeric(),#
+    max_sov = numeric(),#
+    count = numeric(),#
+    stringsAsFactors = FALSE#
+  )#
+  for(ord in c("EODISCIDA", other_orders)) {#
+    ord_data <- disparity_data$sov[disparity_data$order == ord]#
+    order_means <- rbind(order_means, data.frame(#
+      order = ord,#
+      mean_sov = mean(ord_data, na.rm = TRUE),#
+      median_sov = median(ord_data, na.rm = TRUE),#
+      min_sov = min(ord_data, na.rm = TRUE),#
+      max_sov = max(ord_data, na.rm = TRUE),#
+      count = sum(!is.na(ord_data)),#
+      stringsAsFactors = FALSE#
+    ))#
+    cat(ord, ": ", format(mean(ord_data, na.rm = TRUE), digits = 6), "\n")#
+  }#
+  # 4. 提取原始PCA分数#
+  # 获取所有样本的PCA分数#
+  pca_data <- as.data.frame(pca_results$scores)#
+  # 为PCA数据添加目标分类#
+  pca_data$specimen <- rownames(pca_data)#
+  pca_data$order <- NA#
+  pca_data$sov <- NA#
+  for(i in 1:nrow(pca_data)) {#
+    spec_name <- pca_data$specimen[i]#
+    matching_rows <- which(disparity_data$specimen == spec_name)#
+    if(length(matching_rows) > 0) {#
+      pca_data$order[i] <- as.character(disparity_data$order[matching_rows[1]])#
+      pca_data$sov[i] <- disparity_data$sov[matching_rows[1]]#
+    }#
+  }#
+  # 只保留有目分类的样本#
+  pca_data <- pca_data[!is.na(pca_data$order), ]#
+  # 5. 各个目的主成分方差分析#
+  # 获取所有主成分列#
+  pc_cols <- grep("^PC", names(pca_data), value = TRUE)#
+  # 创建一个数据框来存储各个目在每个主成分上的方差#
+  order_pc_variance <- data.frame(#
+    order = character(),#
+    pc = character(),#
+    variance = numeric(),#
+    stringsAsFactors = FALSE#
+  )#
+  # 计算EODISCIDA和其他目在所有主成分上的方差#
+  for(ord in unique(pca_data$order)) {#
+    ord_data <- pca_data[pca_data$order == ord, pc_cols]#
+    # 检查样本数量是否足够计算方差#
+    if(nrow(ord_data) > 1) {#
+      for(pc in pc_cols) {#
+        pc_var <- var(ord_data[[pc]], na.rm = TRUE)#
+        order_pc_variance <- rbind(order_pc_variance, data.frame(#
+          order = ord,#
+          pc = pc,#
+          variance = pc_var,#
+          stringsAsFactors = FALSE#
+        ))#
+      }#
+    }#
+  }#
+  # 提取EODISCIDA的主成分方差#
+  eodiscida_pc_vars <- order_pc_variance[order_pc_variance$order == "EODISCIDA", ]#
+  # 取前10个主成分#
+  eodiscida_pc_vars <- eodiscida_pc_vars[1:min(10, nrow(eodiscida_pc_vars)), ]#
+  cat("\nEODISCIDA各主成分的方差:\n")#
+  print(eodiscida_pc_vars)#
+  # 计算每个样本在所有主成分上的方差#
+  specimen_pc_vars <- data.frame(#
+    specimen = character(),#
+    order = character(),#
+    total_var = numeric(),#
+    stringsAsFactors = FALSE#
+  )#
+  for(i in 1:nrow(pca_data)) {#
+    pc_values <- as.numeric(pca_data[i, pc_cols])#
+    specimen_pc_vars <- rbind(specimen_pc_vars, data.frame(#
+      specimen = pca_data$specimen[i],#
+      order = pca_data$order[i],#
+      total_var = var(pc_values, na.rm = TRUE),#
+      stringsAsFactors = FALSE#
+    ))#
+  }#
+  # 6. 可能的原因分析#
+  cat("\n可能的原因分析:\n")#
+  cat("1. 检查EODISCIDA样本在各主成分上的分布:\n")#
+  top_pcs <- order(eodiscida_pc_vars$variance, decreasing = TRUE)[1:3]#
+  cat("  贡献最大方差的前三个主成分: ", #
+      paste(eodiscida_pc_vars$pc[top_pcs], collapse = ", "), "\n")#
+  cat("2. 检查是否有异常值:\n")#
+  # 计算每个EODISCIDA样本的Z-score#
+  eodiscida_specimens <- pca_data[pca_data$order == "EODISCIDA", ]#
+  for(pc in pc_cols[1:5]) {  # 仅检查前5个主成分#
+    if(nrow(eodiscida_specimens) > 0 && sd(eodiscida_specimens[[pc]], na.rm = TRUE) > 0) {#
+      z_scores <- scale(eodiscida_specimens[[pc]])#
+      outliers <- which(abs(z_scores) > 2)#
+      if(length(outliers) > 0) {#
+        cat("  在", pc, "上可能的异常值: ", #
+            paste(eodiscida_specimens$specimen[outliers], #
+                  "Z-score =", round(z_scores[outliers], 2), #
+                  collapse = ", "), "\n")#
+      }#
+    }#
+  }#
+  cat("3. SoV与各主成分方差的关系:\n")#
+  # 计算各目前5个主成分的总方差与SoV的相关性#
+  for(ord in unique(pca_data$order)) {#
+    ord_data <- pca_data[pca_data$order == ord, ]#
+    if(nrow(ord_data) > 2) {  # 需要至少3个样本计算相关性#
+      ord_pc_var_sum <- apply(ord_data[, pc_cols[1:min(5, length(pc_cols))]], 1, var, na.rm = TRUE)#
+      sov_pc_cor <- cor(ord_data$sov, ord_pc_var_sum, use = "pairwise.complete.obs")#
+      cat("  ", ord, "的SoV与前5个主成分总方差相关性:", round(sov_pc_cor, 3), "\n")#
+    }#
+  }#
+  # 7. 返回有用的数据集供绘图使用#
+  return(list(#
+    pca_data = pca_data,#
+    order_means = order_means,#
+    order_pc_variance = order_pc_variance,#
+    specimen_pc_vars = specimen_pc_vars,#
+    eodiscida_specimens = eodiscida_specimens#
+  ))#
+}#
+#
+# 运行分析#
+analysis_results <- analyze_eodiscida_sov()#
+#
+# -------------------------------------------------------------------------------------------------#
+# 可视化分析#
+# -------------------------------------------------------------------------------------------------#
+#
+create_visualizations <- function(analysis_results) {#
+  cat("\n=========== 创建可视化图表 ===========\n")#
+  # 1. 各目的SoV箱线图#
+  p1 <- ggplot(disparity_data, aes(x = reorder(order, sov, FUN = median), y = sov)) +#
+    geom_boxplot(aes(fill = order), alpha = 0.7) +#
+    geom_jitter(width = 0.2, height = 0, alpha = 0.5) +#
+    theme_minimal() +#
+    labs(#
+      title = "各目的SoV分布",#
+      x = "目 (Order)",#
+      y = "Sum of Variances (SoV)"#
+    ) +#
+    theme(#
+      axis.text.x = element_text(angle = 45, hjust = 1),#
+      legend.position = "none"#
+    )#
+  print(p1)#
+  # 2. EODISCIDA与其他目在主要主成分上的方差比较#
+  pc_vars_wide <- dcast(analysis_results$order_pc_variance, order ~ pc, value.var = "variance")#
+  pc_vars_long <- melt(pc_vars_wide, id.vars = "order", #
+                        variable.name = "Principal Component", #
+                        value.name = "Variance")#
+  p2 <- ggplot(pc_vars_long[pc_vars_long$`Principal Component` %in% paste0("PC", 1:5), ], #
+               aes(x = `Principal Component`, y = Variance, fill = order)) +#
+    geom_bar(stat = "identity", position = "dodge") +#
+    theme_minimal() +#
+    labs(#
+      title = "各目在前5个主成分上的方差",#
+      x = "Principal Component",#
+      y = "Variance"#
+    ) +#
+    theme(axis.text.x = element_text(angle = 0))#
+  print(p2)#
+  # 3. 各目样本在PC空间的散点图#
+  # 只使用前两个主成分#
+  pca_data <- analysis_results$pca_data#
+  p3 <- ggplot(pca_data, aes(x = PC1, y = PC2, color = order)) +#
+    geom_point(size = 3, alpha = 0.7) +#
+    stat_ellipse(aes(group = order), type = "t", linetype = 2) +#
+    theme_minimal() +#
+    labs(#
+      title = "各目在PC1和PC2上的分布",#
+      x = "PC1",#
+      y = "PC2"#
+    )#
+  print(p3)#
+  # 4. 找到方差贡献最大的主成分组合#
+  order_pc_var <- analysis_results$order_pc_variance#
+  eodiscida_pc_var <- order_pc_var[order_pc_var$order == "EODISCIDA", ]#
+  top_pcs <- order(eodiscida_pc_var$variance, decreasing = TRUE)[1:2]#
+  pc_x <- eodiscida_pc_var$pc[top_pcs[1]]#
+  pc_y <- eodiscida_pc_var$pc[top_pcs[2]]#
+  p4 <- ggplot(pca_data, aes_string(x = pc_x, y = pc_y, color = "order")) +#
+    geom_point(size = 3, alpha = 0.7) +#
+    stat_ellipse(aes(group = order), type = "t", linetype = 2) +#
+    theme_minimal() +#
+    labs(#
+      title = paste("各目在", pc_x, "和", pc_y, "上的分布（EODISCIDA方差最大的主成分）"),#
+      x = pc_x,#
+      y = pc_y#
+    )#
+  print(p4)#
+  # 5. SoV与各样本主成分总方差的散点图#
+  # 计算每个样本前5个主成分的总方差#
+  pc_cols <- grep("^PC", names(pca_data), value = TRUE)[1:5]#
+  pca_data$pc_total_var <- apply(pca_data[, pc_cols], 1, var, na.rm = TRUE)#
+  p5 <- ggplot(pca_data, aes(x = pc_total_var, y = sov, color = order)) +#
+    geom_point(size = 3) +#
+    geom_smooth(method = "lm", se = FALSE, color = "gray50") +#
+    theme_minimal() +#
+    labs(#
+      title = "样本主成分总方差与SoV的关系",#
+      x = "前5个主成分的总方差",#
+      y = "Sum of Variances (SoV)"#
+    )#
+  print(p5)#
+  # 保存所有图表#
+  plots <- list(p1, p2, p3, p4, p5)#
+  return(plots)#
+}#
+#
+# 运行可视化分析#
+plots <- create_visualizations(analysis_results)#
+#
+# 如果要保存图表为PDF#
+save_plots <- function(plots) {#
+  pdf("EODISCIDA_SoV_Analysis.pdf", width = 10, height = 8)#
+  for(p in plots) {#
+    print(p)#
+  }#
+  dev.off()#
+  cat("\n图表已保存到 'EODISCIDA_SoV_Analysis.pdf'\n")#
+}#
+#
+# 取消注释下行以保存图表#
+# save_plots(plots)#
+#
+cat("\n分析完成！\n")
